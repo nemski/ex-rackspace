@@ -49,6 +49,7 @@ defmodule Rackspace.Api.Base do
         auth = get_auth
         content_type =  opts[:content_type] || "application/json"
         accept = opts[:accept] || "application/json"
+        timeout = Application.get_env(:rackspace, :timeout) || 5_000
 
           url
             |> query_params(params)
@@ -56,7 +57,7 @@ defmodule Rackspace.Api.Base do
               "X-Auth-Token": auth[:token],
               "Content-Type": content_type,
               "Accept": accept
-            ], body: body])
+            ], body: body, timeout: timeout])
       end
 
       defp query_params(url, params) do
